@@ -155,18 +155,18 @@ app.post("/api/students/:id/unregister", async (req, res) => {
 // === Demo seeding ===
 app.post("/api/seed", async (req, res) => {
   const courses = [
-    { title: "Intro to Programming", code: "CS101" },
-    { title: "Data Structures", code: "CS201" },
+    { title: "Object Oriented Programming", code: "OOP101" },
+    { title: "Artificial Intelligence", code: "AI201" },
     { title: "Web Development", code: "WEB101" },
     { title: "Databases", code: "DB101" },
     { title: "Operating Systems", code: "OS201" }
   ];
   const students = [
-    { name: "Majd Kassem", email: "majd@example.com", registeredCourses: [] },
-    { name: "Maradona", email: "maradona@example.com", registeredCourses: [] },
-    { name: "Elon Musk", email: "Elon@example.com", registeredCourses: [] },
-    { name: "John doe", email: "jd@example.com", registeredCourses: [] }
-  ];
+    { name: "Majd Kassem", email: "majd@gmail.com", registeredCourses: [] },
+    { name: "Maradona", email: "maradona@outlook.com", registeredCourses: [] },
+    { name: "Elon Musk", email: "Elon@hotmail.com", registeredCourses: [] },
+    { name: "John doe", email: "jd@Yahoo.com", registeredCourses: [] }
+  ]
   await coursesCol.deleteMany({});
   await studentsCol.deleteMany({});
   await coursesCol.insertMany(courses);
