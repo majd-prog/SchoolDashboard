@@ -1,4 +1,4 @@
-const API_BASE = "https://schooldashboard-falq.onrender.com";
+const API_BASE = "https://schooldashboard1.onrender.com"; // your Render URL
 
 const coursesTable = document.querySelector("#courses-table tbody");
 const studentsTable = document.querySelector("#students-table tbody");
@@ -11,7 +11,7 @@ function showToast(msg, success = true) {
     toast.textContent = msg;
     toast.style.background = success ? "#4CAF50" : "#e95656";
     toast.style.display = "block";
-    setTimeout(() => { toast.style.display = "none"; }, 2000);
+    setTimeout(() => toast.style.display = "none", 2000);
 }
 
 // --- Load Courses ---
@@ -47,7 +47,6 @@ async function loadStudents() {
             <td><button class="delete" onclick="deleteStudent('${s._id}')">Delete</button></td>
         `;
         studentsTable.appendChild(tr);
-
         const option = document.createElement("option");
         option.value = s._id;
         option.textContent = s.name;
@@ -63,8 +62,7 @@ async function loadStudentCourses(studentId, highlightCourseId = null) {
     const student = await res.json();
     student.registeredCourses.forEach(c => {
         const tr = document.createElement("tr");
-        const dateObj = new Date(c.registeredAt);
-        const iso = dateObj.toISOString().slice(0, 16).replace("T", " ");
+        const iso = new Date(c.registeredAt).toISOString().slice(0, 16).replace("T", " ");
         tr.innerHTML = `
             <td>${c.title}</td>
             <td>${c.code}</td>
@@ -73,40 +71,41 @@ async function loadStudentCourses(studentId, highlightCourseId = null) {
         `;
         if (highlightCourseId && c.courseId === highlightCourseId) {
             tr.style.background = "#d4f7d4";
-            setTimeout(() => { tr.style.background = ""; }, 1500);
+            setTimeout(() => tr.style.background = "", 1500);
         }
         studentCoursesTable.appendChild(tr);
     });
 }
 
-// --- CRUD actions ---
+// --- CRUD Actions ---
 document.getElementById("add-course-form").addEventListener("submit", async e => {
     e.preventDefault();
     const title = document.getElementById("course-title").value;
     const code = document.getElementById("course-code").value;
     await fetch(`${API_BASE}/api/courses`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ title, code }) });
-    e.target.reset(); loadCourses(); showToast("Course added!");
+    e.target.reset();
+    loadCourses();
+    showToast("Course added!");
 });
+
 document.getElementById("add-student-form").addEventListener("submit", async e => {
     e.preventDefault();
     const name = document.getElementById("student-name").value;
     const email = document.getElementById("student-email").value;
     await fetch(`${API_BASE}/api/students`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email }) });
-    e.target.reset(); loadStudents(); showToast("Student added!");
+    e.target.reset();
+    loadStudents();
+    showToast("Student added!");
 });
+
 async function deleteCourse(id) { if (confirm("Delete course?")) { await fetch(`${API_BASE}/api/courses/${id}`, { method: "DELETE" }); loadCourses(); showToast("Course deleted!", false); } }
 async function deleteStudent(id) { if (confirm("Delete student?")) { await fetch(`${API_BASE}/api/students/${id}`, { method: "DELETE" }); loadStudents(); loadStudentCourses(""); showToast("Student deleted!", false); } }
 async function registerCourse(courseId) { const studentId = studentSelect.value; if (!studentId) return alert("Select a student"); await fetch(`${API_BASE}/api/students/${studentId}/register`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ courseId }) }); loadStudentCourses(studentId, courseId); showToast("Registered!"); }
-async function unregisterCourse(studentId, courseId) {
-    if (confirm("Unregister course?")) { await fetch(`${API_BASE}/api/students/${studentId}/unregister`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ courseId }) }); loadStudentCourses(studentId); showToast("Unregistered!", false); }
-}
+async function unregisterCourse(studentId, courseId) { if (confirm("Unregister course?")) { await fetch(`${API_BASE}/api/students/${studentId}/unregister`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ courseId }) }); loadStudentCourses(studentId); showToast("Unregistered!", false); } }
 
 // --- Seed Reset ---
 document.getElementById("seed-btn").addEventListener("click", async () => {
-    if (confirm("Reset all data?")) {
-        await fetch(`${API_BASE}/api/seed`, { method: "POST" });
-        loadCourses(); loadStudents(); loadStudentCourses(""); showToast("Seed reset!");
-    }
+    if (confirm("Reset all data?")) { await fetch(`${API_BASE}/api/seed`, { method: "POST" }); loadCourses(); loadStudents(); loadStudentCourses(""); showToast("Seed reset!"); }
 });
 
 // --- Student select ---
@@ -115,14 +114,12 @@ studentSelect.addEventListener("change", e => loadStudentCourses(e.target.value)
 // --- Search ---
 document.getElementById("course-search").addEventListener("input", e => {
     const term = e.target.value.toLowerCase();
-    coursesTable.querySelectorAll("tr").forEach(r => {
-        r.style.display = r.children[0].textContent.toLowerCase().includes(term) || r.children[1].textContent.toLowerCase().includes(term) ? "" : "none";
-    });
+    coursesTable.querySelectorAll("tr").forEach(r => r.style.display = r.children[0].textContent.toLowerCase().includes(term) || r.children[1].textContent.toLowerCase().includes(term) ? "" : "none");
 });
 document.getElementById("student-search").addEventListener("input", e => {
     const term = e.target.value.toLowerCase();
-    studentsTable.querySelectorAll("tr").forEach(r => {
-        r.style.display = r.children[0].textContent.toLowerCase().includes(term) || r.children[1].textContent.toLowerCase().includes(term) ? "" : "none";
-    });
+    studentsTable.querySelectorAll("tr").forEach(r => r.style.display = r.children[0].textContent.toLowerCase().includes(term) || r.children[1].textContent.toLowerCase().includes(term) ? "" : "none");
 });
+
+// --- Initialize ---
 loadCourses(); loadStudents();

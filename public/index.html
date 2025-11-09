@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +7,9 @@
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-
 <body>
     <header>
-        <h1>🎓 Course & Student Dashboard</h1>
+        <h1>🎓 School Dashboard</h1>
         <button id="seed-btn">🔄 Reset Seed Data</button>
     </header>
 
@@ -28,8 +26,8 @@
             <table id="courses-table">
                 <thead>
                     <tr>
-                        <th data-sort="title">Title</th>
-                        <th data-sort="code">Code</th>
+                        <th>Title</th>
+                        <th>Code</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -49,8 +47,8 @@
             <table id="students-table">
                 <thead>
                     <tr>
-                        <th data-sort="name">Name</th>
-                        <th data-sort="email">Email</th>
+                        <th>Name</th>
+                        <th>Email</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -78,8 +76,9 @@
         </section>
     </main>
 
+    <!-- Toast Notification -->
     <div id="toast"></div>
+
     <script src="app.js"></script>
 </body>
-
 </html>
