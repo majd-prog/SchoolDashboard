@@ -1,4 +1,4 @@
-const API_BASE = "https://schooldashboard1.onrender.com"; // your Render URL
+const API_BASE = "https://schooldashboard1.onrender.com"; 
 
 const coursesTable = document.querySelector("#courses-table tbody");
 const studentsTable = document.querySelector("#students-table tbody");
