@@ -162,9 +162,10 @@ app.post("/api/seed", async (req, res) => {
     { title: "Operating Systems", code: "OS201" }
   ];
   const students = [
-    { name: "Alice Johnson", email: "alice@example.com", registeredCourses: [] },
-    { name: "Bob Smith", email: "bob@example.com", registeredCourses: [] },
-    { name: "Carla Haddad", email: "carla@example.com", registeredCourses: [] }
+    { name: "Majd Kassem", email: "majd@example.com", registeredCourses: [] },
+    { name: "Maradona", email: "maradona@example.com", registeredCourses: [] },
+    { name: "Elon Musk", email: "Elon@example.com", registeredCourses: [] },
+    { name: "John doe", email: "jd@example.com", registeredCourses: [] }
   ];
   await coursesCol.deleteMany({});
   await studentsCol.deleteMany({});
@@ -174,7 +175,7 @@ app.post("/api/seed", async (req, res) => {
 });
 
 // ✅ FIX: Express 5 wildcard route
-app.use((req, res) => {
+app.get((req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
